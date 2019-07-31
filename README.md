@@ -26,7 +26,7 @@ By default your browser will not allow requests to a server hosted on another po
 
 ## Step 2
 ```
-git clone https://github.com/
+git clone https://github.com/nikhilmandlik/telemetry-data.git
 cd telemetry-data
 npm install
 npm start
