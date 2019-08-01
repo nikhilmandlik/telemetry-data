@@ -1,14 +1,51 @@
-
+h1 {
+    text-align: center;
+}
 table {
     border-collapse: collapse;
+    width: 100%;
 }
-th, td {
-    border: 1px solid black;
+table, th, td {
+    border: 1px solid #d0d0d0;
     padding: 4px;
+    text-align: center;
 }
 th {
+    background: #ababab;
     cursor: pointer;
 }
+th.selected.ascending:before {
+    content: '\2191';
+    padding-right: 5px; 
+}
+th.selected.descending:before {
+    content: '\2193';
+    padding-right: 5px;
+    transform: rotateZ(90deg);
+}
 th:hover {
-    background: rgb(158, 158, 158);
+    background: #464646;
+    color: #ffffff;
+}
+th.selected:hover:before {
+    color: #ffffff;
+}
+
+input[type=checkbox] {
+    transform: scale(1.5);
+}
+
+.endpoints {
+    border: 1px solid gray;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    padding: 10px;
+    text-align: center;
+}
+
+.endpoints li {
+    display: inline-block;
+    font-size: 20px;
+    list-style: none;
+    padding: 0 30px;
 }

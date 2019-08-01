@@ -8,17 +8,23 @@
     <link rel="stylesheet" href="./src/index.css">
 </head>
 <body>
-    <h1>Select Endpoints to fetch Telemetry data</h1>
-
+    <h1>Telemetry data</h1>
     <div class="endpoints">
-        <input id="pwr.v" type="checkbox">pwr.v</input>
-        <input id="pwr.c" type="checkbox">pwr.c</input>
+        <h3>Select Endpoints to fetch Telemetry data</h1>
+        <li>
+            <label>pwr.c</label>
+            <span><input id="pwr.c" type="checkbox" /></span>
+        </li>
+        <li>
+            <label>pwr.v</label>
+            <span><input id="pwr.v" type="checkbox" /></span>
+        </li>
     </div>
 
     <table>
         <thead>
             <th>ID</th>
-            <th>Timestamp</th>
+            <th class="selected descending">Timestamp</th>
             <th>Value</th>
         </thead>
         <tbody>

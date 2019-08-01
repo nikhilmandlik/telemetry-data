@@ -1,10 +1,10 @@
 
-const FETCH_TIME_DIFF = 0.15 * 60 * 1000; // 15 minutes
+const FETCH_TIME_DIFF = 15 * 60 * 1000; // 15 minutes
 const endpoints = document.querySelector('.endpoints');
 const table = document.querySelector('table');
-const sortTypes = ['id','timestamp','value'];
-let sortOrder = sortTypes[1];
-
+const SORT_TYPES = ['id','timestamp','value'];
+let sortColumn = SORT_TYPES[1];
+let sortAscending = false;
 let webSocket = null;
 
 const init = () => {
@@ -28,10 +28,13 @@ const updateTable = (pointId, enabled) => {
         return removeTableEntries(pointId);
     }
 
+    // fetch historic data
     fetchHistoricalData(pointId)
         .then((data) => {
             addTableEntries(data);
         });
+    
+    // fetch realtime data
     subscribeRealTimeData(pointId);
 }
 
@@ -66,24 +69,36 @@ const removeTableEntries = (pointId) => {
 const sortTable = () => {
     const contents = Array.from(table.tBodies[0].rows);
     let compare;
-    switch (sortOrder) {
-        case sortTypes[0]:
-            compare = function(rowA, rowB) {
-                return rowA.cells[0].textContent.toString() > rowB.cells[0].textContent.toString() ? 1 : -1;
+    
+    switch (sortColumn) {
+        case SORT_TYPES[0]:
+            compare = (rowA, rowB) => {
+                const idA = rowA.cells[0].textContent.toString();
+                const idB = rowB.cells[0].textContent.toString();
+                return sortAscending 
+                    ? idA > idB ? 1 : -1
+                    : idA < idB ? 1 : -1;
             };
             break;
-        case sortTypes[1]:
-            compare = function(rowA, rowB) {
-                return new Date(rowA.cells[1].textContent).getTime() > new Date(rowB.cells[1].textContent).getTime() ? 1 : -1;
+        case SORT_TYPES[1]:
+            compare = (rowA, rowB) => {
+                const timestampA = new Date(rowA.cells[1].textContent).getTime();
+                const timestampB = new Date(rowB.cells[1].textContent).getTime();
+                return sortAscending 
+                    ? timestampA > timestampB ? 1 : -1
+                    : timestampA < timestampB ? 1 : -1;
             };
             break;
-        case sortTypes[2]:
-            compare = function(rowA, rowB) {
-                return rowA.cells[2].textContent - rowB.cells[2].textContent;
+        case SORT_TYPES[2]:
+            compare = (rowA, rowB) => {
+                const valueA = rowA.cells[2].textContent.toString();
+                const valueB = rowB.cells[2].textContent.toString();
+                return sortAscending
+                    ? valueA - valueB
+                    : valueB - valueA;
             };
             break;
     }
-
 
     // sort
     contents.sort(compare);
@@ -128,7 +143,18 @@ const handleSort = (event) => {
     if (event.target.tagName != 'TH') return;
 
     let th = event.target;
-    sortOrder = sortTypes[th.cellIndex];
+    if (th.classList.contains('selected')) {
+        sortAscending = !sortAscending;
+    } else {
+        sortAscending = true;
+        table.querySelectorAll('th').forEach((th) => {
+            th.classList = '';
+        });
+    }
+    const className = `selected ${sortAscending ? 'ascending' : 'descending'}`;
+    th.classList = className;
+    
+    sortColumn = SORT_TYPES[th.cellIndex];
     sortTable();
 }
 
