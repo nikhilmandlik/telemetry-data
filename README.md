@@ -3,7 +3,7 @@
 
 # Installing and Running the Coding Exercise
 
-## Step 1: Prerequisites
+## Step 1: Prerequisites (For realtime Data)
 
 * [Open MCT Integration Tutorials
 ](https://github.com/nasa/openmct-tutorial.git)
